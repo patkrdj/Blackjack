@@ -1,6 +1,7 @@
 package Model
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -16,7 +17,7 @@ func NewDeck() *Deck {
 	deck := make([]Card, 0)
 	for _, suit := range suits {
 		for _, value := range values {
-			deck = append(deck, Card{suit: suit, value: value})
+			deck = append(deck, NewCard(suit, value))
 		}
 	}
 	return &Deck{cards: deck}
@@ -33,4 +34,13 @@ func (deck *Deck) PrintDeck() {
 	for _, card := range deck.cards {
 		fmt.Println(card.suit, card.value)
 	}
+}
+
+func (deck *Deck) DrawCard() (Card, error) {
+	if len(deck.cards) == 0 {
+		return Card{}, errors.New("덱에 카드가 없습니다.")
+	}
+	card := deck.cards[0]
+	deck.cards = deck.cards[1:]
+	return card, nil
 }
