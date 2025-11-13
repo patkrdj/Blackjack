@@ -39,7 +39,7 @@ func (round *Round) dealCard(hand *Hand) error {
 	if err != nil {
 		return err
 	}
-	hand.addCard(card)
+	hand.AddCard(card)
 	return nil
 }
 

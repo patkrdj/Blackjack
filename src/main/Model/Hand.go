@@ -11,7 +11,7 @@ func NewHand(role string) *Hand {
 	return &Hand{role, make([]Card, 0)}
 }
 
-func (hand *Hand) addCard(card Card) {
+func (hand *Hand) AddCard(card Card) {
 	hand.cards = append(hand.cards, card)
 }
 
@@ -19,7 +19,7 @@ func (hand *Hand) GetCards() []Card {
 	return hand.cards
 }
 
-func (hand *Hand) getSum() int {
+func (hand *Hand) GetSum() int {
 	cardSum := 0
 	aceCount := 0
 
@@ -43,8 +43,8 @@ func (hand *Hand) getSum() int {
 	return cardSum
 }
 
-func (hand *Hand) isBurst() bool {
-	sum := hand.getSum()
+func (hand *Hand) IsBurst() bool {
+	sum := hand.GetSum()
 	if sum > 21 {
 		return true
 	}
