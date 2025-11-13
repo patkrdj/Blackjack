@@ -25,6 +25,14 @@ func (round *Round) DealInit() error {
 	return nil
 }
 
+func (round *Round) PlayerHit() error {
+	err := round.dealCard(round.playerHand)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (round *Round) dealCard(hand *Hand) error {
 	card, err := round.deck.DrawCard()
 	if err != nil {
