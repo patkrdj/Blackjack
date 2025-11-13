@@ -6,7 +6,7 @@ import (
 )
 
 func Test_Draw(t *testing.T) {
-	deck := Model.NewDeck()
+	deck := Model.NewDeck(nil)
 	card, err := deck.DrawCard()
 	if err != nil {
 		t.Error(err)
