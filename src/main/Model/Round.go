@@ -15,21 +15,12 @@ func NewRound(deck *Deck, bet int) *Round {
 }
 
 func (round *Round) DealInit() error {
-	err := round.dealCard(round.playerHand)
-	if err != nil {
-		return err
-	}
-	err = round.dealCard(round.playerHand)
-	if err != nil {
-		return err
-	}
-	err = round.dealCard(round.dealerHand)
-	if err != nil {
-		return err
-	}
-	err = round.dealCard(round.dealerHand)
-	if err != nil {
-		return err
+	hands := []*Hand{round.playerHand, round.playerHand, round.dealerHand, round.dealerHand}
+	for _, hand := range hands {
+		err := round.dealCard(hand)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
