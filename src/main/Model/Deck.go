@@ -11,7 +11,10 @@ type Deck struct {
 	cards []Card
 }
 
-func NewDeck() *Deck {
+func NewDeck(cards []Card) *Deck {
+	if cards != nil {
+		return &Deck{cards: cards}
+	}
 	suits := []string{"♠", "♣", "♥", "♦"}
 	values := []string{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
 	deck := make([]Card, 0)
