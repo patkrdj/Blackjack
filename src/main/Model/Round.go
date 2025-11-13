@@ -33,6 +33,16 @@ func (round *Round) PlayerHit() error {
 	return nil
 }
 
+func (round *Round) DealerTurn() error {
+	for round.dealerHand.GetSum() < 17 {
+		err := round.dealCard(round.dealerHand)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (round *Round) dealCard(hand *Hand) error {
 	card, err := round.deck.DrawCard()
 	if err != nil {
