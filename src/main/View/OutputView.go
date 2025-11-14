@@ -32,5 +32,11 @@ func (outputView *OutputView) PrintPlayerCards(round Model.Round) error {
 	if err != nil {
 		return err
 	}
+
+	err = outputView.Writer.Flush()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
