@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type OutputView struct {
@@ -22,13 +23,18 @@ func (outputView *OutputView) PrintPlayerCards(round Model.Round) error {
 	if err != nil {
 		return err
 	}
+
+	var cardsTemp []string
 	for _, card := range cards {
-		_, err := outputView.Writer.WriteString(card.GetSuit() + card.GetValue() + ", ")
-		if err != nil {
-			return err
-		}
+		cardsTemp = append(cardsTemp, card.GetSuit()+card.GetValue())
 	}
-	_, err = outputView.Writer.WriteString("현재 카드의 합은 " + strconv.Itoa(round.GetPlayerHand().GetSum()) + "입니다.")
+	cardLine := strings.Join(cardsTemp, ", ")
+	_, err = outputView.Writer.WriteString(cardLine + "\n")
+	if err != nil {
+		return err
+	}
+
+	_, err = outputView.Writer.WriteString("현재 카드의 합은 " + strconv.Itoa(round.GetPlayerHand().GetSum()) + "입니다.\n")
 	if err != nil {
 		return err
 	}
@@ -38,5 +44,19 @@ func (outputView *OutputView) PrintPlayerCards(round Model.Round) error {
 		return err
 	}
 
+	return nil
+}
+
+func (outputView *OutputView) PrintDealerCard(round Model.Round) error {
+	playerHand := round.GetPlayerHand()
+	cards := playerHand.GetCards()
+	_, err := outputView.Writer.WriteString("딜러의 카드: " + cards[0].GetSuit() + cards[0].GetValue() + "\n")
+	if err != nil {
+		return err
+	}
+	err = outputView.Writer.Flush()
+	if err != nil {
+		return err
+	}
 	return nil
 }
