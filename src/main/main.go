@@ -1,8 +1,10 @@
 package main
 
-import "Blackjack/src/main/View"
+import "Blackjack/src/main/Controller"
 
 func main() {
-	inputView := View.NewInputView()
-	inputView.ReadString()
+	err := Controller.Run()
+	if err != nil {
+		panic(err)
+	}
 }
