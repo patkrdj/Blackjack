@@ -11,7 +11,7 @@ func Test_ReadString_NormalInput(t *testing.T) {
 	fakeInput := "400\n"
 	inputView := &View.InputView{Reader: bufio.NewReader(strings.NewReader(fakeInput))}
 
-	value, err := inputView.ReadString()
+	value, err := inputView.ReadBet()
 
 	if err != nil {
 		t.Errorf("예상치 않은 에러 발생")
@@ -25,7 +25,7 @@ func Test_Exception_Negative(t *testing.T) {
 	fakeInput := "-122\n"
 	inputView := &View.InputView{Reader: bufio.NewReader(strings.NewReader(fakeInput))}
 
-	_, err := inputView.ReadString()
+	_, err := inputView.ReadBet()
 
 	if err == nil {
 		t.Errorf("예상치 않은 에러 발생: %v", err)
@@ -38,7 +38,7 @@ func Test_Exception_EmptyString(t *testing.T) {
 	fakeInput := "\n"
 	inputView := &View.InputView{Reader: bufio.NewReader(strings.NewReader(fakeInput))}
 
-	_, err := inputView.ReadString()
+	_, err := inputView.ReadBet()
 
 	if err == nil {
 		t.Errorf("예상치 않은 에러 발생: %v", err)
@@ -51,7 +51,7 @@ func Test_Exception_NotDigit(t *testing.T) {
 	fakeInput := "good\n"
 	inputView := &View.InputView{Reader: bufio.NewReader(strings.NewReader(fakeInput))}
 
-	_, err := inputView.ReadString()
+	_, err := inputView.ReadBet()
 
 	if err == nil {
 		t.Errorf("예상치 않은 에러 발생: %v", err)

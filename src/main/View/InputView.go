@@ -16,7 +16,7 @@ func NewInputView() *InputView {
 	return &InputView{Reader: bufio.NewReader(os.Stdin)}
 }
 
-func (view *InputView) ReadString() (int, error) {
+func (view *InputView) ReadBet() (int, error) {
 	fmt.Print("배팅 금액: ")
 	input, err := view.Reader.ReadString('\n')
 	if err != nil {
@@ -32,3 +32,5 @@ func (view *InputView) ReadString() (int, error) {
 	}
 	return num, nil
 }
+
+func (view *InputView) ReadInt() (int, error) {}
