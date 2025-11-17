@@ -3,7 +3,6 @@ package Controller
 import (
 	"Blackjack/src/main/Model"
 	"Blackjack/src/main/View"
-	"fmt"
 )
 
 func Run() error {
@@ -66,7 +65,10 @@ func Run() error {
 		}
 	}
 
-	fmt.Println(float64(bet) + float64(bet)*round.CalculatePayout())
+	err = outputView.PrintResult(*round)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

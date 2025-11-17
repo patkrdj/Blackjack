@@ -83,6 +83,10 @@ func (round *Round) IsBlackjack() bool {
 	return false
 }
 
+func (round *Round) GetBet() int {
+	return round.bet
+}
+
 func (round *Round) GetDealerHand() *Hand {
 	return round.dealerHand
 }
