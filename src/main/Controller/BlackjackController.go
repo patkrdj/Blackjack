@@ -3,6 +3,7 @@ package Controller
 import (
 	"Blackjack/src/main/Model"
 	"Blackjack/src/main/View"
+	"fmt"
 )
 
 func Run() error {
@@ -31,6 +32,10 @@ func Run() error {
 	}
 
 	for !round.GetPlayerHand().IsBurst() {
+		if round.IsBlackjack() {
+			break
+		}
+
 		opt, err := inputView.ReadOption()
 		if err != nil {
 			return err
@@ -54,10 +59,14 @@ func Run() error {
 		}
 	}
 
-	err = round.DealerTurn()
-	if err != nil {
-		return err
+	if round.IsBlackjack() {
+		err = round.DealerTurn()
+		if err != nil {
+			return err
+		}
 	}
+
+	fmt.Println(float64(bet) + float64(bet)*round.CalculatePayout())
 
 	return nil
 }

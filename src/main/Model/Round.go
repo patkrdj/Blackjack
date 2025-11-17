@@ -52,14 +52,21 @@ func (round *Round) dealCard(hand *Hand) error {
 	return nil
 }
 
-func (round *Round) calculatePayout() float64 {
+func (round *Round) CalculatePayout() float64 {
 	playerSum := round.playerHand.GetSum()
 	dealerSum := round.dealerHand.GetSum()
+
+	if round.playerHand.IsBurst() {
+		return -1
+	}
+	if round.dealerHand.IsBurst() {
+		return 1
+	}
 
 	if playerSum == dealerSum {
 		return 0
 	} else if playerSum > dealerSum {
-		if round.isBlackjack() {
+		if round.IsBlackjack() {
 			return 1.5
 		} else {
 			return 1
@@ -69,7 +76,7 @@ func (round *Round) calculatePayout() float64 {
 	}
 }
 
-func (round *Round) isBlackjack() bool {
+func (round *Round) IsBlackjack() bool {
 	if round.playerHand.GetSum() == 21 && len(round.playerHand.GetCards()) == 2 {
 		return true
 	}
