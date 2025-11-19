@@ -15,18 +15,16 @@ func Run() error {
 	}
 
 	round := Model.NewRound(Model.NewDeck(nil), bet)
-	err = round.DealInit()
-	if err != nil {
+
+	if err = round.DealInit(); err != nil {
 		return err
 	}
 
-	err = outputView.PrintDealerCard(*round)
-	if err != nil {
+	if err = outputView.PrintDealerCard(*round); err != nil {
 		return err
 	}
 
-	err = outputView.PrintPlayerCards(*round)
-	if err != nil {
+	if err = outputView.PrintPlayerCards(*round); err != nil {
 		return err
 	}
 
@@ -41,16 +39,13 @@ func Run() error {
 		}
 
 		if opt == 1 {
-			err = round.PlayerHit()
-			if err != nil {
+			if err = round.PlayerHit(); err != nil {
 				return err
 			}
-			err = outputView.PrintDealerCard(*round)
-			if err != nil {
+			if err = outputView.PrintDealerCard(*round); err != nil {
 				return err
 			}
-			err = outputView.PrintPlayerCards(*round)
-			if err != nil {
+			if err = outputView.PrintPlayerCards(*round); err != nil {
 				return err
 			}
 		} else {
@@ -59,14 +54,12 @@ func Run() error {
 	}
 
 	if round.IsBlackjack() {
-		err = round.DealerTurn()
-		if err != nil {
+		if err = round.DealerTurn(); err != nil {
 			return err
 		}
 	}
 
-	err = outputView.PrintResult(*round)
-	if err != nil {
+	if err = outputView.PrintResult(*round); err != nil {
 		return err
 	}
 
