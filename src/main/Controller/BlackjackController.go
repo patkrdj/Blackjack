@@ -5,16 +5,13 @@ import (
 	"Blackjack/src/main/View"
 )
 
-func Run() error {
-	inputView := View.NewInputView()
-	outputView := View.NewOutputView()
-
+func playRound(inputView *View.InputView, outputView *View.OutputView, deck *Model.Deck) error {
 	bet, err := inputView.ReadBet()
 	if err != nil {
 		return err
 	}
 
-	round := Model.NewRound(Model.NewDeck(nil), bet)
+	round := Model.NewRound(deck, bet)
 
 	if err = round.DealInit(); err != nil {
 		return err
@@ -53,7 +50,7 @@ func Run() error {
 		}
 	}
 
-	if round.IsBlackjack() {
+	if !round.GetPlayerHand().IsBurst() && !round.IsBlackjack() {
 		if err = round.DealerTurn(); err != nil {
 			return err
 		}
@@ -64,4 +61,19 @@ func Run() error {
 	}
 
 	return nil
+}
+
+func Run() error {
+	inputView := View.NewInputView()
+	outputView := View.NewOutputView()
+
+	deck := Model.NewDeck(nil)
+	for {
+		if deck.IsNeedToShuffle() {
+			deck = Model.NewDeck(nil)
+		}
+		if err := playRound(inputView, outputView, deck); err != nil {
+			return err
+		}
+	}
 }

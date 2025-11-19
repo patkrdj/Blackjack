@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const ReshuffleThreshold = 20
+
 type Deck struct {
 	cards []Card
 }
@@ -46,4 +48,12 @@ func (deck *Deck) DrawCard() (Card, error) {
 	card := deck.cards[0]
 	deck.cards = deck.cards[1:]
 	return card, nil
+}
+
+func (deck *Deck) IsNeedToShuffle() bool {
+	return len(deck.cards) <= ReshuffleThreshold
+}
+
+func (deck *Deck) GetCardSize() int {
+	return len(deck.cards)
 }
