@@ -2,6 +2,7 @@ package Strategy
 
 import (
 	"Blackjack/src/main/Model"
+	"sync"
 )
 
 type SimResult struct {
@@ -14,7 +15,7 @@ type SimResult struct {
 	ReturnRate float64 // 수익률 (%)
 }
 
-func playRound(deck *Model.Deck, strategy Strategy) float64 {
+func playRound(deck *Model.Deck, strategy Strategy) (float64, int, int) {
 	bet := strategy.DecideBetting()
 	round := Model.NewRound(deck, bet)
 
@@ -40,22 +41,83 @@ func playRound(deck *Model.Deck, strategy Strategy) float64 {
 
 	strategy.OnRoundEnd(round.GetPlayerHand(), round.GetDealerHand())
 
-	return float64(bet) * round.CalculatePayout()
+	payout := round.CalculatePayout()
+	earn := float64(bet) * payout
+
+	resultType := 0
+	if payout > 0 {
+		resultType = 1
+	} else if payout < 0 {
+		resultType = -1
+	}
+
+	return earn, bet, resultType
 }
 
-func playSingleGame(round int, strategy Strategy) float64 {
+func playSingleGame(round int, strategy Strategy) SimResult {
 	deck := Model.NewDeck(nil)
-	earn := 0.0
+	var result SimResult
+
 	for i := 0; i < round; i++ {
 		if deck.IsNeedToShuffle() {
 			deck = Model.NewDeck(nil)
 		}
-		earn += playRound(deck, strategy)
+		earn, bet, outcome := playRound(deck, strategy)
+
+		result.TotalBet += bet
+		result.TotalEarn += earn
+		if outcome == 1 {
+			result.Wins++
+		} else if outcome == -1 {
+			result.Losses++
+		} else {
+			result.Draws++
+		}
 	}
-	return earn
+	return result
 }
 
-func Run() float64 {
-	earn := playSingleGame(10, newDealerStrategy(1000))
-	return earn
+func Run() SimResult {
+	simulationCount := 10000
+	roundPerGame := 10
+	defaultBetAmount := 1000
+
+	var wg sync.WaitGroup
+	results := make(chan SimResult, simulationCount)
+
+	for i := 0; i < simulationCount; i++ {
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+			simResult := playSingleGame(roundPerGame, newDealerStrategy(defaultBetAmount))
+			results <- simResult
+		}()
+	}
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	var finalResult SimResult
+
+	for res := range results {
+		finalResult.Wins += res.Wins
+		finalResult.Draws += res.Draws
+		finalResult.Losses += res.Losses
+		finalResult.TotalBet += res.TotalBet
+		finalResult.TotalEarn += res.TotalEarn
+	}
+
+	totalGames := finalResult.Wins + finalResult.Draws + finalResult.Losses
+	if totalGames > 0 {
+		finalResult.WinRate = (float64(finalResult.Wins) / float64(totalGames)) * 100
+	}
+
+	if finalResult.TotalBet > 0 {
+		finalResult.ReturnRate = (finalResult.TotalEarn / float64(finalResult.TotalBet)) * 100
+	}
+
+	return finalResult
 }
