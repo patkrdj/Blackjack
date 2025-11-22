@@ -1,5 +1,7 @@
 package Strategy
 
+import "Blackjack/src/main/Model"
+
 type Action int
 
 const (
@@ -8,6 +10,7 @@ const (
 )
 
 type Strategy interface {
-	DecideAction(ctx GameContext) Action
+	DecideAction(playerHand Model.Hand, dealerCard Model.Card) Action
 	DecideBetting() int
+	OnRoundEnd(playerHand Model.Hand, dealerHand Model.Hand)
 }
