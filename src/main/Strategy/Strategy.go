@@ -10,7 +10,7 @@ const (
 )
 
 type Strategy interface {
-	DecideAction(playerHand Model.Hand, dealerCard Model.Card) Action
+	DecideAction(playerHand *Model.Hand, dealerCard Model.Card) Action
 	DecideBetting() int
-	OnRoundEnd(playerHand Model.Hand, dealerHand Model.Hand)
+	OnRoundEnd(playerHand *Model.Hand, dealerHand *Model.Hand)
 }
