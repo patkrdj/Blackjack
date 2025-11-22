@@ -2,7 +2,9 @@ package Strategy
 
 import (
 	"Blackjack/src/main/Model"
+	"fmt"
 	"sync"
+	"time"
 )
 
 type SimResult struct {
@@ -78,9 +80,11 @@ func playSingleGame(round int, strategy Strategy) SimResult {
 }
 
 func Run() SimResult {
-	simulationCount := 10000
+	simulationCount := 1_000_000
 	roundPerGame := 10
 	defaultBetAmount := 1000
+
+	start := time.Now()
 
 	var wg sync.WaitGroup
 	results := make(chan SimResult, simulationCount)
@@ -118,6 +122,45 @@ func Run() SimResult {
 	if finalResult.TotalBet > 0 {
 		finalResult.ReturnRate = (finalResult.TotalEarn / float64(finalResult.TotalBet)) * 100
 	}
+
+	fmt.Println("걸린 시간:", time.Since(start))
+
+	return finalResult
+}
+
+func RunWithoutGoroutine() SimResult {
+	simulationCount := 1_000_000
+	roundPerGame := 10
+	defaultBetAmount := 1000
+
+	start := time.Now()
+
+	results := make([]SimResult, simulationCount)
+
+	for i := 0; i < simulationCount; i++ {
+		results[i] = playSingleGame(roundPerGame, newDealerStrategy(defaultBetAmount))
+	}
+
+	var finalResult SimResult
+
+	for _, res := range results {
+		finalResult.Wins += res.Wins
+		finalResult.Draws += res.Draws
+		finalResult.Losses += res.Losses
+		finalResult.TotalBet += res.TotalBet
+		finalResult.TotalEarn += res.TotalEarn
+	}
+
+	totalGames := finalResult.Wins + finalResult.Draws + finalResult.Losses
+	if totalGames > 0 {
+		finalResult.WinRate = (float64(finalResult.Wins) / float64(totalGames)) * 100
+	}
+
+	if finalResult.TotalBet > 0 {
+		finalResult.ReturnRate = (finalResult.TotalEarn / float64(finalResult.TotalBet)) * 100
+	}
+
+	fmt.Println("걸린 시간:", time.Since(start))
 
 	return finalResult
 }

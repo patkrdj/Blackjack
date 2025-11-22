@@ -11,4 +11,5 @@ func main() {
 	//}
 
 	fmt.Println(Strategy.Run())
+	fmt.Println(Strategy.RunWithoutGoroutine())
 }
