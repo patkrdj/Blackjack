@@ -33,6 +33,8 @@ func simulate(simulateCount int, roundPerGame int, strategy Strategy.Strategy, g
 	fmt.Println("패배 횟수:\t" + strconv.Itoa(result.Losses))
 	fmt.Println("총 배팅 금액:\t" + strconv.Itoa(result.TotalBet))
 	fmt.Println("총 수익 금액:\t" + strconv.Itoa(int(result.TotalEarn)))
+	winStr := fmt.Sprintf("%.2f", result.WinRate)
+	fmt.Println("승률:    \t" + winStr + "%")
 	rateStr := fmt.Sprintf("%.2f", result.ReturnRate)
 	fmt.Println("총 수익률:\t" + rateStr + "%")
 }
