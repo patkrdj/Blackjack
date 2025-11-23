@@ -6,7 +6,7 @@ type DealerStrategy struct {
 	defaultBet int
 }
 
-func newDealerStrategy(defaultBet int) *DealerStrategy {
+func NewDealerStrategy(defaultBet int) *DealerStrategy {
 	return &DealerStrategy{defaultBet}
 }
 

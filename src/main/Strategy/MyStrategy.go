@@ -7,7 +7,7 @@ type MyStrategy struct {
 	runningCount int
 }
 
-func newMyStrategy(defaultBet int) *MyStrategy {
+func NewMyStrategy(defaultBet int) *MyStrategy {
 	return &MyStrategy{defaultBet, 0}
 }
 
