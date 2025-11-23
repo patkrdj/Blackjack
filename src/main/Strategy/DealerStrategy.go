@@ -24,3 +24,7 @@ func (s *DealerStrategy) DecideAction(playerHand *Model.Hand, dealerCard Model.C
 func (s *DealerStrategy) OnRoundEnd(playerHand *Model.Hand, dealerHand *Model.Hand) {
 	return
 }
+
+func (s *DealerStrategy) OnShuffleDeck() {
+	return
+}
