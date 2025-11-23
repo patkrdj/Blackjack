@@ -19,7 +19,7 @@ func (hand *Hand) GetCards() []Card {
 	return hand.cards
 }
 
-func (hand *Hand) GetSum() int {
+func (hand *Hand) calc() (int, int) {
 	cardSum := 0
 	aceCount := 0
 
@@ -40,7 +40,17 @@ func (hand *Hand) GetSum() int {
 		aceCount--
 	}
 
-	return cardSum
+	return cardSum, aceCount
+}
+
+func (hand *Hand) GetSum() int {
+	sum, _ := hand.calc()
+	return sum
+}
+
+func (hand *Hand) IsSoftHand() bool {
+	_, aceCount := hand.calc()
+	return aceCount > 0
 }
 
 func (hand *Hand) IsBurst() bool {
