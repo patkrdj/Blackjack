@@ -80,11 +80,7 @@ func playSingleGame(round int, strategy Strategy) SimResult {
 	return result
 }
 
-func Run() SimResult {
-	simulationCount := 1_000_000
-	roundPerGame := 10
-	defaultBetAmount := 1000
-
+func Run(simulationCount int, roundPerGame int, strategy Strategy) SimResult {
 	start := time.Now()
 
 	var wg sync.WaitGroup
@@ -95,7 +91,7 @@ func Run() SimResult {
 
 		go func() {
 			defer wg.Done()
-			simResult := playSingleGame(roundPerGame, newDealerStrategy(defaultBetAmount))
+			simResult := playSingleGame(roundPerGame, strategy)
 			results <- simResult
 		}()
 	}
@@ -129,17 +125,13 @@ func Run() SimResult {
 	return finalResult
 }
 
-func RunWithoutGoroutine() SimResult {
-	simulationCount := 1_000_000
-	roundPerGame := 10
-	defaultBetAmount := 1000
-
+func RunWithoutGoroutine(simulationCount int, roundPerGame int, strategy Strategy) SimResult {
 	start := time.Now()
 
 	results := make([]SimResult, simulationCount)
 
 	for i := 0; i < simulationCount; i++ {
-		results[i] = playSingleGame(roundPerGame, newDealerStrategy(defaultBetAmount))
+		results[i] = playSingleGame(roundPerGame, strategy)
 	}
 
 	var finalResult SimResult
