@@ -41,13 +41,14 @@ func (s *MyStrategy) DecideAction(playerHand *Model.Hand, dealerCard Model.Card)
 	}
 
 	if playerHand.IsSoftHand() {
-		if playerScore == 19 {
+		if playerScore >= 19 {
 			return Stand
 		}
 		if playerScore == 18 {
 			if dealerScore >= 9 || dealerScore == 1 {
 				return Hit
 			}
+			return Stand
 		}
 		return Hit
 	}
@@ -67,7 +68,7 @@ func (s *MyStrategy) OnRoundEnd(playerHand *Model.Hand, dealerHand *Model.Hand) 
 
 func (s *MyStrategy) updateCount(card Model.Card) {
 	val := card.GetCardValue()
-	if val >= 1 && val <= 6 {
+	if val >= 2 && val <= 6 {
 		s.runningCount++
 	} else if val == 10 || val == 11 || val == 1 {
 		s.runningCount--
