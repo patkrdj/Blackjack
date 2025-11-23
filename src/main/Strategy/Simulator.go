@@ -63,6 +63,7 @@ func playSingleGame(round int, strategy Strategy) SimResult {
 	for i := 0; i < round; i++ {
 		if deck.IsNeedToShuffle() {
 			deck = Model.NewDeck(nil)
+			strategy.OnShuffleDeck()
 		}
 		earn, bet, outcome := playRound(deck, strategy)
 

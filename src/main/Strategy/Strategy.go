@@ -13,4 +13,5 @@ type Strategy interface {
 	DecideAction(playerHand *Model.Hand, dealerCard Model.Card) Action
 	DecideBetting() int
 	OnRoundEnd(playerHand *Model.Hand, dealerHand *Model.Hand)
+	OnShuffleDeck()
 }
