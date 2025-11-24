@@ -4,6 +4,17 @@
 기본적인 대화형 게임 플레이를 지원함은 물론, 
 사용자가 직접 설계한 전략(카드 카운팅, 베팅 시스템 등)을 기반으로 대규모 시뮬레이션을 수행하여 기대 수익률과 승률을 통계적으로 분석할 수 있다.
 
+## 시뮬레이션 실행 방법
+- src/main/main.go를 실행시키면 정의된 상수값에 따라 시뮬레이션을 진행한다.
+- 사용자는 src/main/Strategy/MyStrategy.go를 수정해서 블랙잭 전략을 수정할 수 있다.
+
+### 인수값
+simulate(simulationCount, roundPerGame, Strategy.NewMyStrategy(defaultBet), true)
+- simulationCount: 총 게임 진행 횟수를 의미한다.
+- roundPerGame: 한 게임 당 라운드를 몇 번 시행할지 결정한다.
+- defaultBet: 한 라운드 당 최소 배팅 금액을 결정한다.
+- goroutine: true면 goroutine을 사용하고 false면 for iteration을 수행한다.
+
 ## 게임 규칙
 
 ### 기본 규칙
